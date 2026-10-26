@@ -8,7 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run watch` — Rollup in watch mode.
 - `npm start` — runs `watch` and `@web/dev-server` concurrently; serves `demo/index.html` (open `/demo/`).
 - `npm run types` — regenerate `src/definition-schema.d.ts` from `src/definition-schema.json` via `json2ts`. Run after editing the schema.
-- `npm run release` — `npm version patch`: preflight guards (on `main`, clean tree, not behind `origin/main`, generated files current, build passes), then the bump and a `dist/` rebuild (the `version` hook, so the local build registers the new tag), then commit, bare-semver tag, `git push --follow-tags`, then waits on the CI run and fails if the npm publish fails. `npm run release:minor` / `release:major` for other bumps.
+- `just lint` — what the CI gate checks besides the build: regenerating the committed generated files (`npm run types`) changes nothing. `just build` = `npm run build`.
+- `just merge` / `just release-patch` (`release-minor`, `release-major`) — pull requests into `main` from a feature branch with everything committed: a no-release one, or a release one whose merge publishes to npm in CI (`.github/workflows/build-publish.yml`), then the release GitHub App tags the bare version and creates the GitHub release. Never `npm publish`, tag or edit the version by hand.
 - No tests or linter are configured.
 
 Requires Node `>=24.9.0`, npm `>=10.0.2`.
